@@ -7,7 +7,6 @@ LABEL description="Nginx Proxy Image"
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-
 # make Apt non-interactive
 RUN echo 'APT::Get::Assume-Yes "true";' > /etc/apt/apt.conf.d/90circleci \
   && echo 'DPkg::Options "--force-confnew";' >> /etc/apt/apt.conf.d/90circleci \
@@ -43,9 +42,6 @@ RUN apt-get update  && \
 	unzip                                      \
 	bzip2                                   && \
 	rm -rf /var/lib/apt/lists/*
-
-# Expose port 81
-EXPOSE 81
 
 # call entrypoint script
 COPY entrypoint.sh /usr/local/bin/
