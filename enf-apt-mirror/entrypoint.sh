@@ -7,9 +7,10 @@ function sedeasy {
 
 if [ "$1" = 'nginx' ]; then
     echo "Setting up enftun"
-    sedeasy "proxy_url_placeholder" "${PROXY_URL}" /etc/nginx/conf.d/cacher.conf
     /usr/bin/enftun-setup up /etc/enftun/enf0.conf
-    /usr/bin/enftun -c /etc/enftun/enf0.conf &    
+    /usr/bin/enftun -c /etc/enftun/enf0.conf &
+
+    sedeasy "proxy_url_placeholder" "${PROXY_URL}" /etc/nginx/conf.d/cacher.conf
 fi
 
 exec "$@"
