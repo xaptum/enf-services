@@ -37,9 +37,9 @@ following options to the Docker daemon configuration file
 and restart the Docker daemon.
 
 On Linux, `daemon.json` is located at `/etc/docker/daemon.json`.  On
-Mac OS, change it via the Docker Preferences->Daemon->Advanced menu.
+Mac OS, change it via the Docker `Preferences->Daemon->Advanced` menu.
 
-The `fixed-cidr-v6` option should not be necessary, but is due to a
+The `fixed-cidr-v6` option is required due to
 [bug](https://github.com/moby/moby/issues/36954) in Docker. The
 `fd00:d0c::/64` prefix is arbitary. Replace it as desired.
 
@@ -55,11 +55,11 @@ Create these credentials using the `enfcli`:
     enfcli> iam generate-key-pair --keyfile=enf0.key.pem
     enfcli> iam update-endpoint-key --ipv6=<container_ipv6> --keyfile=enf0.key.pem
 
-We suggest picking a memorable IPv6 address for the container.  For
-example, for a container hosting a Debian APT repo,
-`2607:8f80:0000:0000::deb:1` would be a good choice.
+Pick a memorable IPv6 address for the
+container. `2607:8f80:0000:0000::deb:1` would be a good choice for a
+Debian APT repo container.
 
-Move the resulting credentials to a directory on your Docker host
+Move the resulting credentials to a directory on the Docker host:
 
     mv enf0.key.pem /etc/enftun/my_container/
     mv enf0.crt.pem /etc/enftun/my_container/
@@ -75,6 +75,7 @@ Run the Docker image using this command.
                --name <name> <image>
 
 The following table explains these options.
+
 
 |-----------------------------------------------|-----------------------------------------------------|
 | Option                                        | Description                                         |
@@ -92,10 +93,10 @@ The following table explains these options.
 
 ### Additional Details
 
-Remember that you will need to configure the ENF firewall to allow this devices to communicate with this service.
+Remember to configure the ENF firewall to allow devices to communicate
+with this service.
 
-For specific details each a particular service, see the README in its
-directory.
+For details on a specific service, see the README in its directory.
 
 ## License
 
