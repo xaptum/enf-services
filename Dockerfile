@@ -26,7 +26,7 @@ RUN rm /etc/nginx/conf.d/default.conf && \
 RUN apt-get update  && \
     apt-get install -y --no-install-recommends \
     gnupg                                      \
-    dirmngr                                    
+    dirmngr
 
 # Install base packages
 RUN apt-get update  && \
@@ -39,9 +39,9 @@ RUN apt-get update  && \
 	g++                                        \
 	sudo                                       \
 	cmake                                      \
-	ninja-build                                \    
+	ninja-build                                \
 	unzip                                      \
-	bzip2                                    && \    
+	bzip2                                   && \
 	rm -rf /var/lib/apt/lists/*
 
 # Expose port 81
