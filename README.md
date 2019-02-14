@@ -79,10 +79,10 @@ The following table explains these options.
 
 | Option                                        | Description                                         |
 |-----------------------------------------------|-----------------------------------------------------|
-| --cap-add=NET_ADMIN                           | Permissions to create  network interfaces           |
-| --device /dev/net/tun:/dev/net/tun            | Create a tunnel to the ENF                          |
-| --sysctl net.ipv6.conf.all.disable_ipv6=0     | Enable IPv6 on interfaces in the container          |
-| --sysctl net.ipv6.conf.default.disable_ipv6=0 | Enable IPv6 on interfaces in the container          |
+| --cap-add=NET_ADMIN                           | Manage ENF tunnel network interface                 |
+| --device /dev/net/tun:/dev/net/tun            | Create a ENF tunnel network interface               |
+| --sysctl net.ipv6.conf.all.disable_ipv6=0     | Enable IPv6 on network interfaces in the container  |
+| --sysctl net.ipv6.conf.default.disable_ipv6=0 | Enable IPv6 on network interfaces in the container  |
 | --volume <path_to_credentials>:/data/enf0:ro  | Mount the ENF access credentials into the container |
 
 ### Additional Details
