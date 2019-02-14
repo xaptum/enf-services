@@ -3,7 +3,7 @@ FROM nginx:1.15.8
 MAINTAINER Xaptum
 
 LABEL version="1.1"
-LABEL description="Xaptum APT Mirror Image"
+LABEL description="Xaptum ENF APT Mirror"
 
 ENV PROXY_URL http://cdn-fastly.deb.debian.org
 
