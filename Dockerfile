@@ -5,6 +5,8 @@ MAINTAINER Xaptum
 LABEL version="1.1"
 LABEL description="ENF Debian APT Proxy Image"
 
+ENV PROXY_URL http://cdn-fastly.deb.debian.org
+
 # make Apt non-interactive
 ARG DEBIAN_FRONTEND=noninteractive
 RUN echo 'APT::Get::Assume-Yes "true";' > /etc/apt/apt.conf.d/90-docker      && \
