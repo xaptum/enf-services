@@ -1,5 +1,6 @@
 # Makefile
-NAME := xaptum/enf-apt-mirror
+ORG := xaptum
+NAME := enf-apt-mirror
 IMG := $(NAME)
 
 .PHONY: push run
