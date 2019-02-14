@@ -8,6 +8,13 @@ The Xaptum ENF is a secure and scalable IPv6 overlay network for IoT
 that is isolated and protected from the public Internet.  Docker
 containers are an easy way deploy backend services on your ENF.
 
+## Services
+
+Images for each container are published to the [Xaptum Docker
+Hub](https://hub.docker.com/u/xaptum).
+
+The source for each is contained in a subdirectory in this repo.
+
 ## Usage
 
 We recommend using cloud or physical servers running Linux to run
