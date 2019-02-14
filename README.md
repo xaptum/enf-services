@@ -22,7 +22,7 @@ Docker containers on your ENF network.  For testing and development, a
 desktop may be more convenient.
 
 This section walks through the three main steps for running Docker
-iamges on the ENF.
+images on the ENF.
 
 ### Configure Docker for IPv6
 
