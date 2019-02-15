@@ -1,0 +1,13 @@
+version: "3"
+services:
+  apt-repo-mirror:
+    image: xaptum/enf-apt-mirror
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun:/dev/net/tun"
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 0
+      net.ipv6.conf.default.disable_ipv6: 0
+    volumes:
+      - "/etc/enftun/enf-apt-mirror:/data/enf0:ro"
