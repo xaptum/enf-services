@@ -56,7 +56,7 @@ Create these credentials using the `enfcli`:
     enfcli> iam update-endpoint-key --ipv6=<container_ipv6> --keyfile=enf0.key.pem
 
 Pick a memorable IPv6 address for the
-container. `2607:8f80:0000:0000::deb:1` would be a good choice for a
+container. For example, `2607:8f80::deb:1` would be a good choice for a
 Debian APT repo container.
 
 Move the resulting credentials to a directory on the Docker host:
