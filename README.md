@@ -52,8 +52,9 @@ Create these credentials using the `enfcli`:
 
     enfcli connect --host <domain>.xaptum.io --user <email_address>
 
-    enfcli> iam generate-key-pair --keyfile=enf0.key.pem
-    enfcli> iam update-endpoint-key --ipv6=<container_ipv6> --keyfile=enf0.key.pem
+    enfcli> iam create-endpoint-key --key-out-file=enf0.key.pem --public-key-out-file=enf0.pub.pem
+    enfcli> iam create-endpoint-with-address --address=<container_ipv6> --public-key-in-file=enf0.pub.pem
+    enfcli> iam create-endpoint-cert --cert-out-file=enf0.crt.pem --identity=<container_ipv6> --key-in-file=enf0.key.pem
 
 Pick a memorable IPv6 address for the
 container. For example, `2607:8f80::deb:1` would be a good choice for a
