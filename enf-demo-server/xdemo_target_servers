@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+
+LOGGER_NAME = 'xdemo-target-server'
+
+def parse_server_definition(file_path):
+    port = int(file_path.split('.')[-2])
+    with open(file_path, 'r') as input_file:
+        response = input_file.read()
+
+    return port,response
+
+class target_server(object):
+    BIND_IP = '::'
+
+    def __init__(self, port, response, tcp=True):
+        import logging
+
+        self.response = response.encode('UTF-8')
+        self.port = port
+        self.tcp = tcp
+        self.logger = logging.getLogger(LOGGER_NAME)
+
+    def run(self):
+        import socket
+        import threading
+
+        sock = self.open_socket()
+
+        self.stopped = False
+
+        while not self.stopped:
+            sock.settimeout(1)
+            try:
+                client_sock, address = sock.accept()
+                self.logger.debug('Received connection from ' + str(address))
+                threading.Thread(target=target_server.respond,
+                                 args=(self,client_sock)
+                                 ).start()
+            except socket.timeout:
+                pass
+
+    def stop(self):
+        self.stopped = True
+
+    def open_socket(self):
+        import socket
+        import logging
+
+        if self.tcp:
+            sock_type = socket.SOCK_STREAM
+        else:
+            sock_type = socket.SOCK_DGRAM
+        sock = socket.socket(socket.AF_INET6, sock_type)
+        sock.bind((target_server.BIND_IP, self.port))
+        sock.listen(1)
+
+        logging.getLogger(LOGGER_NAME).info('Listening on ' + target_server.BIND_IP + ':' + str(self.port))
+
+        return sock
+
+    def respond(self, client_sock):
+        import logging
+
+        try:
+            client_sock.send(self.response)
+            client_sock.close()
+        except ConnectionError:
+            pass
+        except Exception as e:
+            logging.getLogger(LOGGER_NAME).info('Caught exception while sending response: ' + str(e))
+
+def start_server(server_list, port, response):
+    import threading
+
+    serv = target_server(port, response)
+    server_list.append(serv)
+    threading.Thread(target=target_server.run,
+                     args=(serv,)
+                     ).start()
+
+def discover_targets(server_definitions_directory):
+    import os
+
+    server_defs = []
+
+    for f in os.listdir(server_definitions_directory):
+        filename = os.fsdecode(f)
+        if filename.endswith('.txt'):
+            server_defs.append(parse_server_definition(os.path.join(os.fsdecode(server_definitions_directory), filename)))
+
+    return server_defs
+
+def setup_logger(log_file_path):
+    import logging
+    import os
+
+    log_directory = os.path.dirname(log_file_path)
+    os.makedirs(log_directory, exist_ok=True)
+
+    logging.basicConfig(filename=log_file_path,
+            format='%(asctime)s %(levelname)-8s %(message)s',
+            level=logging.INFO)
+    return logging.getLogger(LOGGER_NAME)
+
+def main():
+    from sys import argv
+    import os
+    import time
+
+    if len(argv) != 3:
+        print('usage: ', argv[0], ' <server-definitions-directory> <log-file-path>')
+        exit(1)
+
+    logger = setup_logger(argv[2])
+
+    server_def_dir = os.fsencode(argv[1])
+
+    server_defs = discover_targets(server_def_dir)
+
+    servers = []
+    for port,response in server_defs:
+        start_server(servers, port, response)
+
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        logger.info('Shutting down')
+
+    for serv in servers:
+        serv.stop()
+
+if __name__ == '__main__':
+    main()
