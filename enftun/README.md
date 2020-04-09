@@ -20,10 +20,18 @@ FROM xaptum:enftun
 
 ### Test Shell
 
-To run this image in a local container, run:
-```
-make shell
-```
+To run this image in a local container:
+- Create a subdirectory named `enf0`
+    ``` 
+    mkdir enf0
+    ```
+- Copy the private key and certificate files generated using the instructions in [enf-services
+README](https://github.com/xaptum/enf-services) into `enf0/`
+
+- run:
+    ```
+    make shell
+    ```
 
 This will run the container and start the `bash` shell.
 
