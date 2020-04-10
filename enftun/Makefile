@@ -1,3 +1,4 @@
+VERSION := 1.0.0
 ORG := xaptum
 NAME := enftun
 IMG := $(ORG)/$(NAME)
@@ -6,10 +7,10 @@ IMG := $(ORG)/$(NAME)
 .PHONY: build push shell
 
 build: Dockerfile
-	docker build -t $(IMG) .
+	docker build -t $(IMG):$(VERSION) .
 
 push: build
 	docker push $(IMG)
 
 shell: build
-	docker run --cap-add=NET_ADMIN --device /dev/net/tun:/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 --sysctl net.ipv6.conf.default.disable_ipv6=0 --volume `pwd`/enf0:/data/enf0:ro -it $(IMG) bash
+	docker run --cap-add=NET_ADMIN --device /dev/net/tun:/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 --sysctl net.ipv6.conf.default.disable_ipv6=0 --volume `pwd`/enf0:/data/enf0:ro -it $(IMG):$(VERSION) bash
