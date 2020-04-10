@@ -1,9 +1,9 @@
-# Makefile
 ORG := xaptum
 NAME := enftun
 IMG := $(ORG)/$(NAME)
 
-.PHONY: push run
+.DEFAULT_GOAL := build
+.PHONY: build push shell
 
 build: Dockerfile
 	docker build -t $(IMG) .
