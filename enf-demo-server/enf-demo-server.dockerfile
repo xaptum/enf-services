@@ -1,4 +1,4 @@
-FROM xaptum/enftun
+FROM xaptum/enftun:1.0.0
 
 RUN apt-get update     && \
     apt-get install -y    \
