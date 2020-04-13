@@ -1,15 +1,18 @@
-# Makefile
+VERSION := 1.0.0
 ORG := xaptum
 NAME := enftun
 IMG := $(ORG)/$(NAME)
 
-.PHONY: push run
+.DEFAULT_GOAL := build
+.PHONY: build push shell
 
 build: Dockerfile
 	docker build -t $(IMG) .
+	docker tag $(IMG):latest $(IMG):$(VERSION)
 
-push:
-	docker push $(IMG)
+push: build
+	docker push $(IMG):latest
+	docker push $(IMG):$(VERSION)
 
-shell:
-	docker run --cap-add=NET_ADMIN --device /dev/net/tun:/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 --sysctl net.ipv6.conf.default.disable_ipv6=0 --volume `pwd`/enf0:/data/enf0:ro -it $(IMG) bash
+shell: build
+	docker run --cap-add=NET_ADMIN --device /dev/net/tun:/dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 --sysctl net.ipv6.conf.default.disable_ipv6=0 --volume `pwd`/enf0:/data/enf0:ro -it $(IMG):$(VERSION) bash

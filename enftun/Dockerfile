@@ -35,6 +35,8 @@ COPY xaptum.list /etc/apt/sources.list.d/xaptum.list
 RUN apt-get update  && \
     apt-get install -y --no-install-recommends      \
       enftun                                        \
+      ca-certificates                               \
+      telnet netcat-openbsd wget curl               \
       iproute2                                   && \
     rm -rf /var/lib/apt/lists/*
 
