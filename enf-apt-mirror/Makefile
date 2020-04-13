@@ -7,7 +7,8 @@ IMG := $(ORG)/$(NAME)
 .PHONY: push run
 
 build: Dockerfile
-	docker build -t $(IMG):$(VERSION) .
+	docker build -t $(IMG) .
+	docker tag $(IMG):latest $(IMG):$(VERSION)
 
 push:
 	@echo "docker push $(IMG)"
