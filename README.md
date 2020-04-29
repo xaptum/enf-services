@@ -93,9 +93,61 @@ with this service.
 
 For details on a specific service, see the README in its directory.
 
+### Troubleshooting
+
+#### Repeated TLS Connection Attempts
+
+Repeated TLS connection attempts are usually caused by an incorrect
+certificate or key.
+
+```
+<7>Loaded server TLS certificate /etc/enftun/enf.cacert.pem
+<7>Loaded client TLS certificate /data/enf0/enf0.crt.pem
+<7>Loaded client TLS private key /data/enf0/enf0.key.pem
+<7>Validated client TLS cert and private key
+<7>TCP: connecting to [23.147.128.112]:443
+<6>TCP: Connected to [23.147.128.112]:443
+<6>Completed TLS handshake
+<6>Opened tun device enf0
+<6>Started.
+<6>Stopped.
+<3>Failed to shutdown TLS connection0:(null):(null):(null)
+<7>Loaded server TLS certificate /etc/enftun/enf.cacert.pem
+<7>Loaded client TLS certificate /data/enf0/enf0.crt.pem
+<7>Loaded client TLS private key /data/enf0/enf0.key.pem
+<7>Validated client TLS cert and private key
+<7>TCP: connecting to [23.147.128.112]:443
+<6>TCP: Connected to [23.147.128.112]:443
+<6>Completed TLS handshake
+<6>Opened tun device enf0
+<6>Started.
+<6>Stopped.
+```
+
+Run
+```
+openssl x509 -in=enf0.crt.pem -noout -text
+```
+to verify that the `CN=` fields contain the intended IPv6 address.
+
+```
+Certificate:
+<snip>
+    Signature Algorithm: ecdsa-with-SHA256
+        Issuer: CN=2607:8f80::deb:1
+        Validity
+            Not Before: Apr 23 21:21:02 2020 GMT
+            Not After : Apr 23 21:21:02 2021 GMT
+        Subject: CN=2607:8f80::deb:1
+<snip>
+```
+
+If the IPv6 address is incorrect, recreate the certicate using the
+`enfcli`.
+
 ## License
 
-Copyright 2019 Xaptum, Inc.
+Copyright 2019–2020 Xaptum, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
 use this work except in compliance with the License. You may obtain a copy of
