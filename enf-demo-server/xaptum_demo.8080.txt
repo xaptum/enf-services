@@ -1,0 +1,8 @@
+
+            Welcome to the Xaptum, Inc. Demonstration Server
+
+This simple server is responding from the enf-demo-server.
+
+If you are seeing this in response to a CURL or WGET request, then the
+round-trip communication is successful.
+

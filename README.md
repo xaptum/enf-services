@@ -36,10 +36,10 @@ following options to the Docker daemon configuration file
 
 and restart the Docker daemon.
 
-On Linux, `daemon.json` is located at `/etc/docker/daemon.json`.  On
-Mac OS, change it via the Docker `Preferences->Daemon->Advanced` menu.
+On Linux, `daemon.json` is located at `/etc/docker/daemon.json`.  
+On Mac OS, change it via the Docker `Preferences->Daemon->Advanced` menu.
 
-The `fixed-cidr-v6` option is required due to
+The `fixed-cidr-v6` option is required due to a
 [bug](https://github.com/moby/moby/issues/36954) in Docker. The
 `fd00:d0c::/64` prefix is arbitary. Replace it as desired.
 
