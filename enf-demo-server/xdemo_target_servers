@@ -10,10 +10,10 @@ def parse_server_definition(file_path):
     return port,response
 
 class target_server(object):
-    BIND_IP = '::'
-
-    def __init__(self, port, response, tcp=True):
+    def __init__(self, bind_address, port, response, tcp=True):
         import logging
+
+        self.bind_address = bind_address
 
         self.response = response.encode('UTF-8')
         self.port = port
@@ -51,10 +51,10 @@ class target_server(object):
         else:
             sock_type = socket.SOCK_DGRAM
         sock = socket.socket(socket.AF_INET6, sock_type)
-        sock.bind((target_server.BIND_IP, self.port))
+        sock.bind((self.bind_address, self.port))
         sock.listen(1)
 
-        logging.getLogger(LOGGER_NAME).info('Listening on ' + target_server.BIND_IP + ':' + str(self.port))
+        logging.getLogger(LOGGER_NAME).info('Listening on ' + self.bind_address + ':' + str(self.port))
 
         return sock
 
@@ -69,10 +69,10 @@ class target_server(object):
         except Exception as e:
             logging.getLogger(LOGGER_NAME).info('Caught exception while sending response: ' + str(e))
 
-def start_server(server_list, port, response):
+def start_server(server_list, address, port, response):
     import threading
 
-    serv = target_server(port, response)
+    serv = target_server(address, port, response)
     server_list.append(serv)
     threading.Thread(target=target_server.run,
                      args=(serv,)
@@ -107,9 +107,11 @@ def main():
     import os
     import time
 
-    if len(argv) != 3:
-        print('usage: ', argv[0], ' <server-definitions-directory> <log-file-path>')
+    if len(argv) != 4:
+        print('usage: ', argv[0], ' <server-definitions-directory> <log-file-path> <bind-address>')
         exit(1)
+
+    address = argv[3]
 
     logger = setup_logger(argv[2])
 
@@ -119,7 +121,7 @@ def main():
 
     servers = []
     for port,response in server_defs:
-        start_server(servers, port, response)
+        start_server(servers, address, port, response)
 
     try:
         while True:
