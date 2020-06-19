@@ -1,4 +1,4 @@
-VERSION := 1.0.2
+VERSION := 1.0.3
 ORG := xaptum
 NAMES   := $(ORG)/enf-demo-server $(ORG)/enf-demo-server-noenf
 
