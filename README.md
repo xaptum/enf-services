@@ -36,7 +36,7 @@ following options to the Docker daemon configuration file
 
 and restart the Docker daemon.
 
-On Linux, `daemon.json` is located at `/etc/docker/daemon.json`.  
+On Linux, `daemon.json` is located at `/etc/docker/daemon.json`.
 On Mac OS, change it via the Docker `Preferences->Daemon->Advanced` menu.
 
 The `fixed-cidr-v6` option is required due to a
@@ -48,22 +48,24 @@ The `fixed-cidr-v6` option is required due to a
 Each Docker container is one endpoint (IPv6) on your ENF and requires
 its own credentials to connect to the ENF.
 
-Create these credentials using the `enfcli`:
+Create these credentials using the
+[enftun-keygen](https://github.com/xaptum/enftun) utility included in
+the Docker image:
 
-    enfcli connect --host <domain>.xaptum.io --user <email_address>
+    # Create a local directory on the host to store the credentials
+    mkdir -p enf0
 
-    enfcli> iam create-endpoint-key --key-out-file=enf0.key.pem --public-key-out-file=enf0.pub.pem
-    enfcli> iam create-endpoint-with-address --address=<container_ipv6> --public-key-in-file=enf0.pub.pem
-    enfcli> iam create-endpoint-cert --cert-out-file=enf0.crt.pem --identity=<container_ipv6> --key-in-file=enf0.key.pem
+    # Create the credentials and register with the ENF
+    #
+    # Replace <USERNAME> with your ENF account username
+    # Replace <ADDRESS> with the desired ENF IPv6 address or ::/64 network
+    # for the container. If just the network is specified, a random
+    # address will be assigned.
+    docker run --volume $(pwd)/enf0:/data/enf0 -it --entrypoint /usr/bin/enftun-keygen xaptum/enftun:latest -c /etc/enftun/enf0.conf -u <USERNAME> -a <ADDRESS>
 
-Pick a memorable IPv6 address for the
-container. For example, `2607:8f80::deb:1` would be a good choice for a
-Debian APT repo container.
-
-Move the resulting credentials to a directory on the Docker host:
-
-    mv enf0.key.pem /etc/enftun/my_container/
-    mv enf0.crt.pem /etc/enftun/my_container/
+Pick a memorable IPv6 address for the container. For example,
+`2607:8f80::deb:1` would be a good choice for a Debian APT repo
+container.
 
 ### Run the Docker Image
 
@@ -72,7 +74,7 @@ Run the Docker image using this command.
     docker run --cap-add=NET_ADMIN --device /dev/net/tun:/dev/net/tun \
                --sysctl net.ipv6.conf.all.disable_ipv6=0              \
                --sysctl net.ipv6.conf.default.disable_ipv6=0          \
-               --volume <path_to_credentials>:/data/enf0:ro           \
+               --volume $(pwd)/enf0:/data/enf0:ro                     \
                --name <name> <image>
 
 The following table explains these options.

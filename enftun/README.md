@@ -22,11 +22,15 @@ FROM xaptum:enftun
 
 To run this image in a local container:
 - Create a subdirectory named `enf0`
-    ``` 
+    ```
     mkdir enf0
     ```
-- Copy the private key and certificate files generated using the instructions in [enf-services
-README](https://github.com/xaptum/enf-services) into `enf0/`
+- Provision the credentials using the following command by or by
+following the instructions in [enf-services
+README](https://github.com/xaptum/enf-services)
+    ```
+    make keys user=<USERNAME> address=<ADDRESS>
+    ```
 
 - run:
     ```
