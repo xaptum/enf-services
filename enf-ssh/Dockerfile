@@ -12,9 +12,11 @@ EXPOSE 22
 VOLUME ["/data/keys"]
 
 # Rename parent entrypoint
-RUN mv /usr/local/bin/entrypoint.sh /usr/local/bin/enftun-entrypoint.sh
+RUN mv /usr/local/bin/entrypoint.sh /usr/local/bin/enftun-entrypoint.sh && \
+    ln -s usr/local/bin/enftun-entrypoint.sh # backwards compat
+
 
 # Configure entrypoint script
 COPY entrypoint.sh /usr/local/bin
-RUN ln -s usr/local/bin/entrypoint.sgh / # backwards compat
+RUN ln -sf usr/local/bin/entrypoint.sh /
 ENTRYPOINT ["entrypoint.sh"]

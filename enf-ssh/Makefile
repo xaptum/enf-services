@@ -1,4 +1,4 @@
-VERSION := 1.0.0
+VERSION := 1.0.1
 ORG := xaptum
 NAME := enf-ssh
 IMG := $(ORG)/$(NAME)
@@ -45,7 +45,7 @@ start:
 	  --dns $(DNS)                                  \
 	  --name jumphost                               \
 	  -e USER=`whoami`                              \
-	  --rm -d -it $(IMG)
+	  --rm -d -it $(IMG):$(VERSION)
 
 stop:
 	docker kill jumphost

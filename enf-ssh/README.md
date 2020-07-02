@@ -29,7 +29,6 @@ The first steps are to configure the ENF and SSH credentials.
 in the `enf0/` directory.  Use the `enftun-keygen` utility provided in
 the image to provision these credentials by running
 
-
    ```
    make provision USER=<demo@example.com> ADDRESS=<2607:8f80:8120:1::1234>
    ```
@@ -43,14 +42,15 @@ the image to provision these credentials by running
 
 1) The SSH server is configured to allow access using your local
 username (the output of `whoami`) and any public keys in the `keys/`
-directory.  Copy your SSH public key into this directory using a command similar to
+directory.  Copy your SSH public key into this directory using a
+command similar to
 
    ```
    cp ~/.ssh/id_rsa.pub keys/
    ```
 
-1) Use the `enfcli` to configure the ENF firewall to allow SSH traffic from this jumphost
-to other endpoints on your ENF network.
+1) Use the `enfcli` to configure the ENF firewall to allow SSH traffic
+from this jumphost to other endpoints on your ENF network.
 
    ```
    > firewall add-firewall-rule --priority=200 --action=ACCEPT --protocol=TCP --direction=EGRESS --source-ip=2607:8f80:8120:1::1234 --source-port=22 --dest-ip=2607:8f80:8120:1::/64
@@ -72,15 +72,24 @@ to other endpoints on your ENF network.
    make start
    ```
 
-   The container has local IP address 172.17.0.200 by default.  If needed, override with the `JUMPHOST_IP` argument:
+   The container has local IP address 172.17.0.200 by default.  If
+   needed, override with the `JUMPHOST_IP` argument:
 
    ```
    make start JUMPHOST_IP=<other ip>
    ```
 
+   If you've configured an ENF private DNS server for your network,
+   add it to the container using the `DNS` argument:
+
+   ```
+   make start DNS=2607:8f80:8120:1::53
+   ```
+
 ## SSH into other Hosts
 
-1) SSH into your ENF endpoints via the jumphost with the following command:
+1) SSH into your ENF endpoints via the jumphost with the following
+command:
 
    ```
    ssh -J 172.17.0.200 user@2607:8f80:8120:1:4e9:bc25:ac07:5772
