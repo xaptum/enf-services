@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:buster
 
 MAINTAINER Xaptum
 
@@ -40,8 +40,8 @@ RUN apt-get update  && \
       iproute2                                   && \
     rm -rf /var/lib/apt/lists/*
 
-# Install enftun configuration
-COPY enf0.conf /etc/enftun/enf0.conf
+# Install default enftun configuration
+COPY enf0.conf /etc/enftun/enf0.conf.default
 
 # Configure entrypoint script
 COPY entrypoint.sh /usr/local/bin/
